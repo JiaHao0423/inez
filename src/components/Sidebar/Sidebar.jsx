@@ -7,14 +7,16 @@ const Sidebar = ({ onFilterChange }) => {
         category: true,
         color: false,
         size: false,
-        price: false
+        price: true
     });
 
     // 篩選值
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
-    const [priceRange, setPriceRange] = useState([0, 10000]);
+    const [priceRange, setPriceRange] = useState([500, 1000]);
+    const minPrice = 0;
+    const maxPrice = 2000;
 
     // 切換 tab 展開/收合
     const toggleTab = (tabName) => {
@@ -58,6 +60,10 @@ const Sidebar = ({ onFilterChange }) => {
         setPriceRange(newRange);
         onFilterChange && onFilterChange({ priceRange: newRange });
     };
+
+    // 計算 track 的位置與寬度
+    const leftPercent = ((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100;
+    const rightPercent = ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100;
 
     // 篩選選項資料
     const categories = [
@@ -199,14 +205,14 @@ const Sidebar = ({ onFilterChange }) => {
                     className={`sidebar__tab ${expandedTabs.price ? 'sidebar__tab--active' : ''}`}
                     onClick={() => toggleTab('price')}
                 >
-                    <span className="sidebar__tab-title">價格</span>
+                    <span className="sidebar__tab-title">價錢</span>
                     <svg
                         className="sidebar__tab-arrow"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
                     >
-                        <polyline points="6 9 12 15 18 9"/>
+                        <polyline points="18 15 12 9 6 15"/>
                     </svg>
                 </button>
 
@@ -215,21 +221,27 @@ const Sidebar = ({ onFilterChange }) => {
                         {/* 雙頭 slider */}
                         <div className="sidebar__slider-wrapper">
                             <div className="slider__track"></div>
-                            <div className="slider__range"></div>
+                            <div 
+                                className="slider__range" 
+                                style={{ 
+                                    left: `${leftPercent}%`, 
+                                    width: `${rightPercent - leftPercent}%` 
+                                }}
+                            ></div>
                             <input
                                 type="range"
-                                min="0"
-                                max="10000"
-                                step="100"
+                                min={minPrice}
+                                max={maxPrice}
+                                step="10"
                                 value={priceRange[0]}
                                 onChange={(e) => handlePriceChange(0, e.target.value)}
                                 className="sidebar__range sidebar__range--min"
                             />
                             <input
                                 type="range"
-                                min="0"
-                                max="10000"
-                                step="100"
+                                min={minPrice}
+                                max={maxPrice}
+                                step="10"
                                 value={priceRange[1]}
                                 onChange={(e) => handlePriceChange(1, e.target.value)}
                                 className="sidebar__range sidebar__range--max"
@@ -238,7 +250,7 @@ const Sidebar = ({ onFilterChange }) => {
 
                         {/* 價格區間顯示 */}
                         <div className="sidebar__price-display">
-                            價格區間：${priceRange[0].toLocaleString()} - ${priceRange[1].toLocaleString()}
+                            價格區間：{priceRange[0]} - {priceRange[1]}
                         </div>
                     </div>
                 </div>
