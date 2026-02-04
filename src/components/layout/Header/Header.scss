@@ -34,7 +34,7 @@
     &--search {
       padding: 15px 6% 15px 6%;
       @include desktop {
-
+        padding: 0;
       }
     }
   }

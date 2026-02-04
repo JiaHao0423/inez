@@ -2,9 +2,8 @@
 @import '../../mixins';
 
 .search-page {
-  min-height: calc(100vh - 200px);
-  padding: $spacing-lg 0;
-  background-color: #f8f8f8;
+  //min-height: calc(100vh - 200px);
+  background-color: #F1F1F1;
 
   @include mobile {
     padding: 0;
@@ -14,24 +13,33 @@
   // ==================== 佈局 ====================
   &__layout {
     display: grid;
-    gap: 13px;
     place-items: center;
-
+    background-color: #F1F1F1;
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-bottom: 30px;
     // 桌面版：側邊欄 + 主內容
     @include desktop {
       grid-template-columns: 280px 1fr;
       gap: $spacing-xl;
+      padding-left: 11.7%;
+      padding-right: 11.7%;
     }
 
-    // 手機版：垂直堆疊
-    @include mobile {
-      grid-template-columns: 1fr;
-      gap: 0;
+    @include desktopLarge {
+      padding-left: 27.5%;
+      padding-right: 27.5%;
     }
   }
 
   // ==================== 側邊欄位置 ====================
   .sidebar {
+    position: sticky;
+    top: 60px; // Header 高度（手機版）
+    z-index: 90;
+    max-height: 50vh;
+    overflow-y: auto;
+
     // 桌面版：固定在左側
     @include desktop {
       position: sticky;
@@ -39,16 +47,7 @@
       align-self: start;
       max-height: calc(100vh - 100px);
       overflow-y: auto;
-    }
-
-    // 手機版：固定在 Header 下方
-    @include mobile {
-      position: sticky;
-      top: 60px; // Header 高度（手機版）
-      z-index: 90;
-      margin-bottom: $spacing-md;
-      max-height: 50vh;
-      overflow-y: auto;
+      background-color: #F1F1F1;
     }
   }
 
@@ -67,6 +66,7 @@
     justify-content: center;
     padding: $spacing-xl * 2 $spacing-md;
     text-align: center;
+    background-color: #F1F1F1;
 
     @include mobile {
       padding: $spacing-xl $spacing-md;
@@ -118,6 +118,15 @@
       display: none;
     }
 
+    &__wrapper {
+      background-color: #F1F1F1;
+
+      @include tablet {
+        width: 100vw;
+        align-items: center;
+      }
+    }
+
     // 隱藏查看全部按鈕
     &__arrow--bottom {
       display: none;
@@ -129,17 +138,21 @@
       gap: $spacing-sm;
       grid-auto-flow: row;
 
-      // 桌面版：3 欄佈局
-      @include desktop {
-        grid-template-columns: repeat(3, 1fr);
-        gap: $spacing-lg;
-      }
-
       // 平板版：2 欄佈局
       @include tablet {
         grid-template-columns: repeat(2, 1fr);
-        gap: $spacing-md;
+        place-items: center;
       }
+
+      // 桌面版：3 欄佈局
+      @include desktop {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+    }
+
+    &__card {
+      background-color: #F1F1F1;
     }
 
     // 隱藏橫向滾動
@@ -158,16 +171,22 @@
   .product-card {
     width: 180px;
 
+    @include desktop {
+      width: 240px;
+    }
+
     &__image-wrapper {
       padding: 0;
       height: 180px;
       width: 100%;
+
+      @include desktop {
+        height: 240px;
+      }
     }
 
     &__info {
-      @include mobile {
-        padding: $spacing-xs;
-      }
+      padding: 0;
     }
 
     &__name {
@@ -191,8 +210,8 @@
 
     &__cart-icon {
       @include mobile {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
       }
     }
   }
