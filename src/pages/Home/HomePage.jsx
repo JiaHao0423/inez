@@ -3,7 +3,7 @@ import Carousel from "../../components/carousel/Carousel.jsx";
 import ProductSection from "../../components/productSection/ProductSection.jsx";
 
 
-const Home = () => {
+const HomePage = () => {
     const hotProducts = [
         {
             id: 1,
@@ -142,4 +142,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default HomePage

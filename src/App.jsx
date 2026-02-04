@@ -1,6 +1,6 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import Home from "./pages/Home/Home.jsx";
-import Search from "./pages/Search/Search.jsx";
+import HomePage from "./pages/Home/HomePage.jsx";
+import SearchPage from "./pages/Search/SearchPage.jsx";
 
 function App() {
 
@@ -9,8 +9,8 @@ function App() {
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/search" element={<Search />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/search" element={<SearchPage />} />
           </Routes>
       </BrowserRouter>
   )
