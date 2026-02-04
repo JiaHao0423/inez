@@ -30,9 +30,9 @@
   // 【桌機版覆寫】
   @include desktop { // 假設您的 mixin 是 desktop 或 min-width: 768px
     flex-direction: column; // 改回垂直排列
-    width: 300px;
+    width: 200px;
     background-color: #f5f5f5;
-    padding: $spacing-md;
+    padding: 0;
     overflow-x: visible;
     gap: 0;
   }

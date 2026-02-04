@@ -20,15 +20,15 @@
     padding-bottom: 30px;
     // 桌面版：側邊欄 + 主內容
     @include desktop {
-      grid-template-columns: 280px 1fr;
-      gap: $spacing-xl;
+      grid-template-columns: 200px 1fr;
+      gap: $spacing-lg;
       padding-left: 11.7%;
       padding-right: 11.7%;
     }
 
     @include desktopLarge {
-      padding-left: 27.5%;
-      padding-right: 27.5%;
+      padding-left: 25.5%;
+      padding-right: 25.5%;
     }
   }
 
