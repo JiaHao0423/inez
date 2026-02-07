@@ -15,15 +15,33 @@ const Sidebar = ({onFilterChange}) => {
     const [selectedColor, setSelectedColor] = useState('');
     const [selectedSize, setSelectedSize] = useState('');
     const [priceRange, setPriceRange] = useState([500, 1000]);
+
+    //在此設定金錢範圍
     const minPrice = 0;
     const maxPrice = 2000;
 
     // 切換 tab 展開/收合
     const toggleTab = (tabName) => {
-        setExpandedTabs(prev => ({
-            ...prev,
-            [tabName]: !prev[tabName]
-        }));
+        const isMobile = window.innerWidth <= 767; // 根據您的 breakpoint 設定
+
+        setExpandedTabs(prev => {
+            if (isMobile) {
+                // 手機版：切換邏輯 (一次只開一個)
+                return {
+                    category: false,
+                    color: false,
+                    size: false,
+                    price: false,
+                    [tabName]: !prev[tabName]
+                };
+            } else {
+                // 桌機版：維持原本的多開邏輯
+                return {
+                    ...prev,
+                    [tabName]: !prev[tabName]
+                };
+            }
+        });
     };
 
     // 處理類別選擇
