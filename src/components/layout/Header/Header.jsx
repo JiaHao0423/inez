@@ -203,7 +203,7 @@ const Header = () => {
                         <button
                             className={`header__icon ${isMenuOpen ? 'header__icon--white' : ''}`}
                             aria-label="購物車"
-                            onClick={() => console.log('購物車')}
+                            onClick={() => navigate(`/cart`)}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
