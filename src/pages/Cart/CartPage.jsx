@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './CartPage.scss';
 import {useNavigate} from "react-router-dom";
+import Header from '../../components/layout/Header/Header.jsx';
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -97,6 +98,8 @@ const Cart = () => {
                 </div>
             </header>
 
+            <Header className="header--cart" />
+
             <main className="cart__container">
                 {/* 桌機版表頭 */}
                 <div className="cart__table-header">
@@ -132,13 +135,52 @@ const Cart = () => {
                                     尺寸 <span className="cart-item__size-tag">{item.size}</span>
                                 </div>
                                 <div className="quantity-selector">
-                                    <button className="quantity-selector__btn quantity-selector__btn--minus">-</button>
+                                    <button className="quantity-selector__btn quantity-selector__btn--minus">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M5 12h14"
+                                                  stroke="currentColor"
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"/>
+                                        </svg>
+
+                                    </button>
                                     <span className="quantity-selector__value">{item.quantity}</span>
-                                    <button className="quantity-selector__btn quantity-selector__btn--plus">+</button>
+                                    <button className="quantity-selector__btn quantity-selector__btn--plus">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 5v14M5 12h14"
+                                                  stroke="currentColor"
+                                                  strokeWidth="2"
+                                                  strokeLinecap="round"/>
+                                        </svg>
+                                    </button>
                                 </div>
                                 <div className="cart-item__price cart-item__price--mobile">${item.price}</div>
                             </div>
                             <div className="cart-item__price cart-item__price--desktop">${item.price}</div>
+                            <div className="quantity-selector quantity-selector--desktop">
+                                <button className="quantity-selector__btn quantity-selector__btn--minus">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5 12h14"
+                                              stroke="currentColor"
+                                              strokeWidth="2"
+                                              strokeLinecap="round"/>
+                                    </svg>
+
+                                </button>
+                                <span className="quantity-selector__value">{item.quantity}</span>
+                                <button className="quantity-selector__btn quantity-selector__btn--plus">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 5v14M5 12h14"
+                                              stroke="currentColor"
+                                              strokeWidth="2"
+                                              strokeLinecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
                             <div className="cart-item__total">${item.price * item.quantity}</div>
                         </div>
                     ))}
@@ -153,8 +195,9 @@ const Cart = () => {
                         <span>折扣</span><span>$190</span>
                     </div>
                     <hr className="cart-summary__divider"/>
-                    <div className="cart-summary__row cart-summary__row--total">
-                        <span>總結</span><span>$590</span>
+                    <div className="cart-summary__row">
+                        <span>總結</span>
+                        <span className="cart-summary__row--total">$590</span>
                     </div>
                     <button className="cart-summary__next-btn">下一步</button>
                 </aside>

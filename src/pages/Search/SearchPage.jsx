@@ -176,7 +176,7 @@ const SearchPage = () => {
 
     });
     return (
-        <DefaultLayout>
+        <DefaultLayout variant="search">
             <div className="search-page">
                 <div className="search-page__layout">
                     {/* 側邊欄 */}

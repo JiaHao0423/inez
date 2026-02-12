@@ -1,10 +1,10 @@
 import Header from "./Header/Header.jsx";
 import Footer from "./Footer/Footer.jsx";
 
-const DefaultLayout = ({children}) => {
+const DefaultLayout = ({children,variant = "default"}) => {
     return (
         <>
-            <Header/>
+            <Header variant ={variant}/>
             {children}
             <Footer/>
         </>
