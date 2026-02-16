@@ -60,6 +60,13 @@
     "a c"
     "b c";
       gap: 8px;
+      padding-right: 11.7%;
+      padding-left: 11.7%;
+    }
+
+    @include desktopLarge {
+      padding-right: 25%;
+      padding-left: 25%;
     }
   }
 
@@ -67,9 +74,10 @@
     display: none;
 
     @include desktop {
+      max-width: 740px;
       display: grid;
-      grid-template-columns: 50px 100px 2fr 1fr 1fr 1fr 50px;
-      padding: 10px 0;
+      grid-template-columns: 51.3% 14.8% 14.8% 14.8% 4%;
+      padding-bottom: 30px;
       border-bottom: 1px solid #eee;
       color: #666;
       grid-area: a;
@@ -78,6 +86,11 @@
 
   &__list {
     grid-area: b;
+
+    @include desktop {
+      max-width: 740px;
+    }
+
   }
 
   .cart-item {
@@ -89,13 +102,21 @@
 
     @include desktop {
       display: grid;
-      grid-template-columns: 50px 100px 2fr 1fr 1fr 1fr 50px;
+      grid-template-columns: 20.2% 31%  14.8% 14.8% 14.8% 4%;
+      gap: 0;
     }
 
     &__content {
       position: relative;
       flex: 1;
       height: 180px;
+      @include desktop {
+        height: 150px;
+        padding-left: 30px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+      }
     }
 
     &__remove-btn {
@@ -105,6 +126,13 @@
       justify-content: end;
       @include desktop {
         display: none;
+      }
+
+      &--desktop {
+        display: none;
+        @include desktop {
+          display: flex;
+        }
       }
     }
 
@@ -128,6 +156,10 @@
       justify-content: center;
       width: 24px;
       height: 24px;
+
+      @include desktop {
+        display: none;
+      }
     }
 
     &__checkbox {
@@ -181,6 +213,10 @@
       width: 180px;
       height: 180px;
       object-fit: cover;
+      @include desktop {
+        width: 150px;
+        height: 150px;
+      }
     }
 
 
@@ -247,8 +283,10 @@
     }
 
     &--desktop {
+      display: none;
       @include desktop {
         display: inline-flex;
+        margin: 0;
       }
     }
 
