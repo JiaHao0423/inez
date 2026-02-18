@@ -128,14 +128,14 @@ const Cart = () => {
                 <h1 className="cart__title">購物車</h1>
                 <div className="cart__header-icons">
                     <button className="cart__icon cart__icon--help" aria-label="幫助">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
                             <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.7c-.8.6-1.3 1-1.3 2.3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                             <circle cx="12" cy="17" r="1" fill="currentColor" />
                         </svg>
                     </button>
                     <button className="cart__icon cart__icon--user" aria-label="用戶">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
                             <path d="M4 20c0-4 4-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>

@@ -24,8 +24,8 @@
     padding-right: 25%;
   }
 
-  // ==================== Cart分頁特別設定 ====================
-  &--cart {
+  // ==================== 個別分頁特別設定 ====================
+  &--cart,&--checkout {
     background-color: $primary-color;
     display: none;
 
