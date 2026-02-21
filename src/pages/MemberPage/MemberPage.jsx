@@ -1,0 +1,445 @@
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import Header from '../../components/layout/Header/Header.jsx';
+import Footer from '../../components/layout/Footer/Footer.jsx';
+import {ROUTES} from '../../constants/routes.js';
+import './MemberPage.scss';
+
+// ==================== 模擬資料 ====================
+
+const MEMBER = {
+    name: '王小明',
+    avatar: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&auto=format&fit=crop&q=60',
+};
+
+const ORDER_STATUS_TABS = [
+    {id: 'pending_payment', label: '待付款', icon: <CreditCardIcon/>},
+    {id: 'pending_shipment', label: '待出貨', icon: <BoxIcon/>},
+    {id: 'pending_receipt', label: '待收貨', icon: <DownloadBoxIcon/>, active: true},
+    {id: 'completed', label: '已完成', icon: <CheckBadgeIcon/>},
+];
+
+const TOOLS = [
+    {id: 'wishlist', label: '我的收藏', icon: <HeartIcon/>},
+    {id: 'history', label: '歷史紀錄', icon: <BookOpenIcon/>, active: true},
+    {id: 'coupon', label: '優惠券', icon: <TicketIcon/>},
+    {id: 'payment', label: '付款方式', icon: <WalletIcon/>},
+    {id: 'rating', label: '評價', icon: <StarIcon/>},
+    {id: 'review', label: '我的評論', icon: <ChatIcon/>},
+    {id: 'address', label: '收貨地址', icon: <LocationIcon/>},
+];
+
+const RECENT_ORDERS = [
+    {
+        id: '12345678',
+        images: [
+            'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=120&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=120&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=120&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=120&auto=format&fit=crop&q=60',
+        ],
+        total: 590,
+        status: '待收貨',
+        statusKey: 'pending_receipt',
+        actions: [
+            {label: '評價', variant: 'outline'},
+            {label: '申請退貨', variant: 'outline'},
+            {label: '確認收貨', variant: 'solid'},
+        ],
+    },
+    {
+        id: '12345678',
+        images: [
+            'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=120&auto=format&fit=crop&q=60',
+            'https://images.unsplash.com/photo-1485462537746-965f33f7f6a7?w=120&auto=format&fit=crop&q=60',
+        ],
+        total: 590,
+        status: '待付款',
+        statusKey: 'pending_payment',
+        actions: [
+            {label: '修改資料', variant: 'outline'},
+            {label: '取消訂單', variant: 'solid'},
+        ],
+    },
+    {
+        id: '12345678',
+        images: [
+            'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=120&auto=format&fit=crop&q=60',
+        ],
+        total: 590,
+        status: '已完成',
+        statusKey: 'completed',
+        actions: [
+            {label: '查看評價', variant: 'outline'},
+            {label: '再買一次', variant: 'solid'},
+        ],
+    },
+];
+
+// ==================== SVG 圖標組件 ====================
+
+function CreditCardIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+    );
+}
+
+function BoxIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+    );
+}
+
+function DownloadBoxIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+    );
+}
+
+function CheckBadgeIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+        </svg>
+    );
+}
+
+function HeartIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+    );
+}
+
+function BookOpenIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+    );
+}
+
+function TicketIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path
+                d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"/>
+        </svg>
+    );
+}
+
+function WalletIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <path d="M16 3H8L4 7h16l-4-4z"/>
+            <circle cx="17" cy="13" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+    );
+}
+
+function StarIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+    );
+}
+
+function ChatIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+    );
+}
+
+function LocationIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+        </svg>
+    );
+}
+
+function QuestionIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17" strokeWidth="2.5"/>
+        </svg>
+    );
+}
+
+function BellIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+    );
+}
+
+function SettingsIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"
+             strokeLinejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+    );
+}
+
+function ChevronRightIcon() {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+             strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+        </svg>
+    );
+}
+
+// ==================== 主頁面組件 ====================
+
+const MemberPage = () => {
+    const navigate = useNavigate();
+    const [activeOrderTab, setActiveOrderTab] = useState('');
+    const [activeTool, setActiveTool] = useState('');
+
+    const handleGoBack = () => navigate(-1);
+    const handleAllOrders = () => console.log('前往全部訂單');
+
+    return (
+        <div className="member-page">
+
+            {/* ── 行動版 Header ── */}
+            <header className="member-page__mobile-header">
+                <button
+                    className="member-page__mobile-header-btn"
+                    onClick={handleGoBack}
+                    aria-label="返回"
+                >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                         strokeLinejoin="round">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                </button>
+                <h1 className="member-page__mobile-header-title">會員</h1>
+                <div className="member-page__mobile-header-icons">
+                    <button className="member-page__mobile-header-icon-btn" aria-label="幫助">
+                        <QuestionIcon/>
+                    </button>
+                    <button className="member-page__mobile-header-icon-btn" aria-label="通知">
+                        <BellIcon/>
+                    </button>
+                    <button className="member-page__mobile-header-icon-btn" aria-label="設定">
+                        <SettingsIcon/>
+                    </button>
+                </div>
+            </header>
+
+            {/* ── 桌面版 Header ── */}
+            <Header variant="member"/>
+
+            {/* ── 主內容 ── */}
+            <main className="member-page__main">
+                <div className="container">
+
+                    {/* ── 用戶資訊列（桌面版橫排 / 行動版直排） ── */}
+                    <section className="member-page__profile">
+                        <div className="member-page__avatar-wrapper">
+                            <img
+                                className="member-page__avatar"
+                                src={MEMBER.avatar}
+                                alt={MEMBER.name}
+                            />
+                        </div>
+                        <span className="member-page__name">{MEMBER.name}</span>
+                        {/* 桌面版問號按鈕 */}
+                        <button className="member-page__help-btn" aria-label="幫助">
+                            <QuestionIcon/>
+                        </button>
+                    </section>
+
+                    {/* ── 主體（桌面版左右分欄） ── */}
+                    <div className="member-page__body">
+
+                        {/* ── 左側側欄 ── */}
+                        <aside className="member-page__sidebar">
+
+                            {/* 我的訂單 */}
+                            <div className="member-page__card">
+                                <div className="member-page__card-header">
+                                    <h2 className="member-page__card-title">我的訂單</h2>
+                                    <button
+                                        className="member-page__card-link"
+                                        onClick={handleAllOrders}
+                                    >
+                                        全部訂單
+                                        <span className="member-page__card-link-icon">
+                                            <ChevronRightIcon/>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <ul className="member-page__order-tabs">
+                                    {ORDER_STATUS_TABS.map((tab) => (
+                                        <li key={tab.id} className="member-page__order-tab-item">
+                                            {/* 行動版：圖標 + 文字直排 */}
+                                            <button
+                                                className={`member-page__order-tab-btn${activeOrderTab === tab.id ? ' member-page__order-tab-btn--active' : ''}`}
+                                                onClick={() => setActiveOrderTab(tab.id)}
+                                                aria-pressed={activeOrderTab === tab.id}
+                                            >
+                                                <span className="member-page__order-tab-icon">
+                                                    {tab.icon}
+                                                </span>
+                                                <span className="member-page__order-tab-label">
+                                                    {tab.label}
+                                                </span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* 常用工具 */}
+                            <div className="member-page__card member-page__card--tools">
+                                <h2 className="member-page__card-title">常用工具</h2>
+
+                                {/* 行動版：Grid 排列 */}
+                                <ul className="member-page__tools-grid">
+                                    {TOOLS.map((tool) => (
+                                        <li key={tool.id} className="member-page__tool-item">
+                                            <button
+                                                className={`member-page__tool-btn${activeTool === tool.id ? ' member-page__tool-btn--active' : ''}`}
+                                                onClick={() => setActiveTool(tool.id)}
+                                                aria-pressed={activeTool === tool.id}
+                                            >
+                                                <span className="member-page__tool-icon">
+                                                    {tool.icon}
+                                                </span>
+                                                <span className="member-page__tool-label">
+                                                    {tool.label}
+                                                </span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {/* 桌面版：List 排列 */}
+                                <ul className="member-page__tools-list">
+                                    {TOOLS.map((tool) => (
+                                        <li key={`list-${tool.id}`} className="member-page__tools-list-item">
+                                            <button
+                                                className={`member-page__tools-list-btn${activeTool === tool.id ? ' member-page__tools-list-btn--active' : ''}`}
+                                                onClick={() => setActiveTool(tool.id)}
+                                                aria-pressed={activeTool === tool.id}
+                                            >
+                                                <span className="member-page__tools-list-icon">
+                                                    {tool.icon}
+                                                </span>
+                                                <span className="member-page__tools-list-label">
+                                                    {tool.label}
+                                                </span>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </aside>
+
+                        {/* ── 右側內容（桌面版：最近訂單表格） ── */}
+                        <section className="member-page__orders-panel">
+                            <h2 className="member-page__orders-panel-title">最近訂單</h2>
+
+                            <div className="member-page__orders-table">
+                                {/* 表頭 */}
+                                <div className="member-page__orders-thead">
+                                    <span className="member-page__orders-th">訂單編號</span>
+                                    <span className="member-page__orders-th">商品</span>
+                                    <span className="member-page__orders-th">總價</span>
+                                    <span className="member-page__orders-th">狀態</span>
+                                </div>
+
+                                {/* 訂單列 */}
+                                {RECENT_ORDERS.map((order, idx) => (
+                                    <div key={idx} className="member-page__order-row">
+                                        <div className="member-page__order-row-main">
+                                            <span className="member-page__order-id">{order.id}</span>
+                                            <div className="member-page__order-images">
+                                                {order.images.map((img, i) => (
+                                                    <img
+                                                        key={i}
+                                                        className="member-page__order-img"
+                                                        src={img}
+                                                        alt={`訂單商品 ${i + 1}`}
+                                                    />
+                                                ))}
+                                            </div>
+                                            <span className="member-page__order-total">${order.total}</span>
+                                            <span
+                                                className={`member-page__order-status member-page__order-status--${order.statusKey}`}>
+                                                {order.status}
+                                            </span>
+                                        </div>
+                                        <div className="member-page__order-actions">
+                                            {order.actions.map((action, ai) => (
+                                                <button
+                                                    key={ai}
+                                                    className={`member-page__order-action-btn member-page__order-action-btn--${action.variant}`}
+                                                >
+                                                    {action.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+
+            {/* ── 桌面版 Footer ── */}
+            <div className="member-page__footer-wrapper">
+                <Footer/>
+            </div>
+        </div>
+    );
+};
+
+export default MemberPage;

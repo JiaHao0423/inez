@@ -43,6 +43,11 @@
     display: flex;
     justify-content: center;
     gap: 24px;
+
+    @include desktop {
+      justify-content: end;
+    }
+
     a {
       width: 20px;
       height: 20px;

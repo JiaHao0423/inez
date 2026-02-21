@@ -25,7 +25,7 @@
   }
 
   // ==================== 個別分頁特別設定 ====================
-  &--cart, &--checkout, &--order-complete {
+  &--cart, &--checkout, &--order-complete, &--member {
     background-color: $primary-color;
     display: none;
 
@@ -469,7 +469,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 30%;
+  width: 35%;
   margin: 32px 0;
 }
 
@@ -489,14 +489,15 @@
   display: flex;
   flex-direction: row;
   gap: 20px;
-  width: 50%;
-  height: auto;
+  //height: auto;
   margin: 32px 0;
 }
 
 .header__image-container {
   flex: 1;
   aspect-ratio: 1 / 1;
+  height: 180px;
+  width: 180px;
   overflow: hidden;
 }
 
