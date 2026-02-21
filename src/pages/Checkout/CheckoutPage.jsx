@@ -4,6 +4,7 @@ import Header from '../../components/layout/Header/Header.jsx';
 import Footer from '../../components/layout/Footer/Footer.jsx';
 import './CheckoutPage.scss';
 import {CameraIcon} from '../../components/Icons/Icons.jsx';
+import { ROUTES } from '../../constants/routes.js';
 
 /**
  * Checkout 頁面元件
@@ -62,7 +63,7 @@ const CheckoutPage = () => {
      * 結帳處理
      */
     const handleCheckout = () => {
-        console.log('結帳');
+        navigate(ROUTES.ORDER_COMPLETE);
     };
 
     return (
@@ -206,20 +207,6 @@ const CheckoutPage = () => {
                                             placeholder="卡片詳情"
                                         />
                                         <span className="checkout-form__input-icon">
-                                            {/*<svg*/}
-                                            {/*    width="18"*/}
-                                            {/*    height="18"*/}
-                                            {/*    viewBox="0 0 24 24"*/}
-                                            {/*    fill="none"*/}
-                                            {/*    stroke="currentColor"*/}
-                                            {/*    strokeWidth="2"*/}
-                                            {/*    strokeLinecap="round"*/}
-                                            {/*    strokeLinejoin="round"*/}
-                                            {/*>*/}
-                                            {/*    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />*/}
-                                            {/*    <circle cx="8.5" cy="8.5" r="1.5" />*/}
-                                            {/*    <polyline points="21 15 16 10 5 21" />*/}
-                                            {/*</svg>*/}
                                             <CameraIcon className="checkout-form__input-svg"/>
                                         </span>
                                     </div>

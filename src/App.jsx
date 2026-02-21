@@ -3,6 +3,8 @@ import HomePage from "./pages/Home/HomePage.jsx";
 import SearchPage from "./pages/Search/SearchPage.jsx";
 import CartPage from "./pages/Cart/CartPage.jsx";
 import CheckoutPage from "./pages/Checkout/CheckoutPage.jsx";
+import OrderCompletePage from "./pages/OrderCompletePage/OrderCompletePage.jsx";
+
 
 function App() {
 
@@ -15,6 +17,7 @@ function App() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order-complete" element={<OrderCompletePage />} />
           </Routes>
       </BrowserRouter>
   )

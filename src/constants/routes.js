@@ -1,5 +1,4 @@
 /**
- * 應用路由常量
  * 集中管理所有路由路徑，便於維護和重構
  */
 export const ROUTES = {
@@ -32,6 +31,7 @@ export const ROUTES = {
 
     // 其他
     CHECKOUT: '/checkout',
+    ORDER_COMPLETE: '/order-complete',
     ABOUT: '/about',
     CONTACT: '/contact',
 };
